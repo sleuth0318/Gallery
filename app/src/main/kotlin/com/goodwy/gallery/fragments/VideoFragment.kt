@@ -643,6 +643,7 @@ class VideoFragment : ViewPagerFragment(), TextureView.SurfaceTextureListener,
                 alpha = if (!mConfig.hideExtendedDetails || !mIsFullscreen) 1f else 0f
                 (activity as? BaseViewerActivity)?.applyProperHorizontalInsets(this)
             }
+            updateExtendedDetailsPosition()
         } else {
             binding.videoDetails.beGone()
         }
@@ -669,6 +670,12 @@ class VideoFragment : ViewPagerFragment(), TextureView.SurfaceTextureListener,
 
     private fun openPanorama() {
         TODO("Panorama is not yet implemented.")
+    }
+
+    override fun updateExtendedDetailsPosition() {
+        if (::mTimeHolder.isInitialized) {
+            updateViewBottomMargin(mTimeHolder)
+        }
     }
 
     override fun fullscreenToggled(isFullscreen: Boolean) {
@@ -700,6 +707,7 @@ class VideoFragment : ViewPagerFragment(), TextureView.SurfaceTextureListener,
                 }
             }
         }
+        updateExtendedDetailsPosition()
     }
 
     private fun showPlaybackSpeedPicker() {

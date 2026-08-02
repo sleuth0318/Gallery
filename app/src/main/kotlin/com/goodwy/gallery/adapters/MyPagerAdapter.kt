@@ -61,6 +61,12 @@ class MyPagerAdapter(val activity: ViewPagerActivity, fm: FragmentManager, val m
         }
     }
 
+    fun updateGalleryStripOffsets() {
+        for ((_, fragment) in fragments) {
+            fragment.updateExtendedDetailsPosition()
+        }
+    }
+
     // try fixing TransactionTooLargeException crash on Android Nougat, tip from https://stackoverflow.com/a/43193425/1967672
     override fun saveState(): Parcelable? {
         val bundle = super.saveState() as Bundle?

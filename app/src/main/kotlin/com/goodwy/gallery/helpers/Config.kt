@@ -320,6 +320,10 @@ class Config(context: Context) : BaseConfig(context) {
         get() = prefs.getBoolean(HIDE_SYSTEM_UI, false)
         set(hideSystemUI) = prefs.edit { putBoolean(HIDE_SYSTEM_UI, hideSystemUI) }
 
+    var showGalleryStrip: Boolean
+        get() = prefs.getBoolean(SHOW_GALLERY_STRIP, true)
+        set(showGalleryStrip) = prefs.edit { putBoolean(SHOW_GALLERY_STRIP, showGalleryStrip) }
+
     var deleteEmptyFolders: Boolean
         get() = prefs.getBoolean(DELETE_EMPTY_FOLDERS, false)
         set(deleteEmptyFolders) = prefs.edit { putBoolean(DELETE_EMPTY_FOLDERS, deleteEmptyFolders) }

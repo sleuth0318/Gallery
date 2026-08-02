@@ -16,6 +16,9 @@
     <dimen name="bottom_actions_height">64dp</dimen>
     <dimen name="bottom_actions_height_double">128dp</dimen>
     <dimen name="bottom_actions_height_bigger">164dp</dimen>
+    <dimen name="gallery_strip_height">56dp</dimen>
+    <dimen name="gallery_strip_cell_size">44dp</dimen>
+    <dimen name="gallery_strip_padding_vertical">6dp</dimen>
     <dimen name="bottom_editor_color_picker_size">40dp</dimen>
     <dimen name="bottom_filters_thumbnail_size">76dp</dimen>
     <dimen name="bottom_filters_height">90dp</dimen>

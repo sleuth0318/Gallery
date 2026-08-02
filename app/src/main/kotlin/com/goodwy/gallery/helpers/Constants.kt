@@ -113,6 +113,7 @@ const val HIDE_GROUPING_BAR = "hide_grouping_bar"
 const val HIDE_GROUPING_BUTTON = "hide_grouping_button"
 const val HIDE_GROUPING_BAR_WHEN_SCROLLING = "hide_grouping_bar_when_scrolling"
 const val FONT_SIZE_DIR = "font_size_dir"
+const val SHOW_GALLERY_STRIP = "show_gallery_strip"
 
 // slideshow
 const val SLIDESHOW_INTERVAL = "slideshow_interval"
