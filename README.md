@@ -9,5 +9,5 @@ Alright Gallery is a clean, open-source Gallery application built for privacy. N
 ## Added Gallery Strip
 This release builds on the original open-source base with custom UI/UX tweaks, introducing an enhanced horizontal gallery strip for faster, more intuitive thumbnail scrubbing. It preserves the core privacy-first foundation—zero ads, zero trackers, and offline data storage—while introducing a polished layout and smoother media viewing experience.
 
-
+<img rsc="app/src/gplay/res/gallery_strip.png" alt="Gallery Strip"/>
 </div>
