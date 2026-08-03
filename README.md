@@ -9,14 +9,3 @@
 
 Your private moments are protected. Discover Right Gallery/Alright Gallery, where your privacy is our priority. <br><br>
 
-## ☕ Support the Project
-
-If you find **Right Gallery/Alright Gallery** useful and would like to support its development, consider
-buying me a coffee! Your support helps me maintain and improve this project.
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/goodwy)
-
-*Every contribution, no matter how small, helps keep this project alive and growing! ❤️*<br><br><br>
-
-
-*Based on [Simple Gallery](https://github.com/SimpleMobileTools/Simple-Gallery), [Fossify Gallery](https://github.com/FossifyOrg/Gallery).*
