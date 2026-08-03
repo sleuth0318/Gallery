@@ -4,8 +4,8 @@
 <img src="app/src/gplay/res/drawable/ic_launcher.png" width="120" alt="App icon"/>
 
 # Right Gallery/Alright Gallery
+Your private moments are protected. Discover Right Gallery/Alright Gallery, where your privacy is our priority. <br><br>
+Alright Gallery is a clean, open-source Gallery application built for privacy. No ads. No trackers. No unnecessary permissions. Just fast, reliable media browsing with a fully customizable interface — switch themes, adjust layouts, and make it yours.Your data stays on your device, Always.<br><br>
+## Added Gallery Strip
 
 </div>
-
-Your private moments are protected. Discover Right Gallery/Alright Gallery, where your privacy is our priority. <br><br>
-Alright Gallery is a clean, open-source Gallery application built for privacy. No ads. No trackers. No unnecessary permissions. Just fast, reliable media browsing with a fully customizable interface — switch themes, adjust layouts, and make it yours.Your data stays on your device, Always.
