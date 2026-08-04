@@ -4,19 +4,10 @@
 <img src="app/src/gplay/res/drawable/ic_launcher.png" width="120" alt="App icon"/>
 
 # Right Gallery/Alright Gallery
-<a href='https://play.google.com/store/apps/details?id=com.goodwy.gallery'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height=80/></a>  <a href='https://play.google.com/store/apps/details?id=dev.goodwy.gallery'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height=80/></a>
-</div>
-
 Your private moments are protected. Discover Right Gallery/Alright Gallery, where your privacy is our priority. <br><br>
+Alright Gallery is a clean, open-source Gallery application built for privacy. No ads. No trackers. No unnecessary permissions. Just fast, reliable media browsing with a fully customizable interface — switch themes, adjust layouts, and make it yours.Your data stays on your device, Always.<br><br>
+## Added Gallery Strip
+This release builds on the original open-source base with custom UI/UX tweaks, introducing an enhanced horizontal gallery strip for faster, more intuitive thumbnail scrubbing. It preserves the core privacy-first foundation—zero ads, zero trackers, and offline data storage—while introducing a polished layout and smoother media viewing experience.
 
-## ☕ Support the Project
-
-If you find **Right Gallery/Alright Gallery** useful and would like to support its development, consider
-buying me a coffee! Your support helps me maintain and improve this project.
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/goodwy)
-
-*Every contribution, no matter how small, helps keep this project alive and growing! ❤️*<br><br><br>
-
-
-*Based on [Simple Gallery](https://github.com/SimpleMobileTools/Simple-Gallery), [Fossify Gallery](https://github.com/FossifyOrg/Gallery).*
+<img src="app/src/gplay/res/gallery_strip.png" width="500" alt="Gallery Strip"/>
+</div>
