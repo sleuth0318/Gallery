@@ -440,6 +440,8 @@ open class PhotoVideoActivity : BaseViewerActivity(), ViewPagerFragment.Fragment
 
     override fun isFullScreen() = mIsFullScreen
 
+    override fun getGalleryStripHeight(): Int = 0
+
     override fun updatePlayPause(play: Boolean) {
         if (play) {
             binding.bottomActions.bottomPlayPause.setImageResource(R.drawable.ic_play_vector)

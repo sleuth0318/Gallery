@@ -15,6 +15,23 @@
         android:id="@+id/bottom_actions"
         layout="@layout/bottom_actions" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gallery_strip"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/gallery_strip_height"
+        android:layout_above="@id/bottom_actions"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:background="@android:color/transparent"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/gallery_strip_padding_vertical"
+        android:paddingBottom="@dimen/gallery_strip_padding_vertical"
+        android:scrollbars="none"
+        android:visibility="gone"
+        tools:listitem="@layout/item_gallery_strip"
+        tools:visibility="visible" />
+
     <ImageView
         android:id="@+id/top_shadow"
         android:layout_width="match_parent"

@@ -147,6 +147,7 @@ class SettingsActivity : SimpleActivity() {
         setupShowHighestQuality()
         setupAllowOneToOneZoom()
         setupAllowInstantChange()
+        setupShowGalleryStrip()
 
         setupBottomActions()
         setupManageBottomActions()
@@ -880,6 +881,14 @@ class SettingsActivity : SimpleActivity() {
         binding.settingsAllowInstantChangeHolder.setOnClickListener {
             binding.settingsAllowInstantChange.toggle()
             config.allowInstantChange = binding.settingsAllowInstantChange.isChecked
+        }
+    }
+
+    private fun setupShowGalleryStrip() {
+        binding.settingsShowGalleryStrip.isChecked = config.showGalleryStrip
+        binding.settingsShowGalleryStripHolder.setOnClickListener {
+            binding.settingsShowGalleryStrip.toggle()
+            config.showGalleryStrip = binding.settingsShowGalleryStrip.isChecked
         }
     }
 

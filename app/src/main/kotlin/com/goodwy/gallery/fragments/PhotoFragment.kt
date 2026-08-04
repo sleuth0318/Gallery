@@ -928,6 +928,7 @@ class PhotoFragment : ViewPagerFragment() {
                         alpha = if (!hideExtendedDetails || !mIsFullscreen) 1f else 0f
                         (activity as? BaseViewerActivity)?.applyProperHorizontalInsets(this)
                     }
+                    updateExtendedDetailsPosition()
                 }
             }
         } else {
@@ -953,6 +954,10 @@ class PhotoFragment : ViewPagerFragment() {
         binding.instantNextItem.layoutParams.width = mScreenWidth / 7
     }
 
+    override fun updateExtendedDetailsPosition() {
+        updateDetailsBottomMargin(binding.photoDetails)
+    }
+
     override fun fullscreenToggled(isFullscreen: Boolean) {
         this.mIsFullscreen = isFullscreen
         binding.apply {
@@ -963,6 +968,7 @@ class PhotoFragment : ViewPagerFragment() {
                     }
                 }
             }
+            updateExtendedDetailsPosition()
 
             if (isFullscreen) {
                 bottomActionsDummy.fadeOut(DEFAULT_ANIMATION_DURATION)

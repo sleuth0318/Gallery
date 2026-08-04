@@ -5,6 +5,8 @@ import android.provider.MediaStore
 import android.provider.MediaStore.Files
 import android.provider.MediaStore.Images
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import com.goodwy.commons.extensions.*
@@ -42,6 +44,29 @@ abstract class ViewPagerFragment : Fragment() {
         fun updatePlayPause(play: Boolean)
 
         fun isFullScreen(): Boolean
+
+        fun getGalleryStripHeight(): Int
+    }
+
+    private val mStoredBottomMargins = HashMap<View, Int>()
+
+    open fun updateExtendedDetailsPosition() {}
+
+    protected fun updateDetailsBottomMargin(detailsView: View?) {
+        updateViewBottomMargin(detailsView)
+    }
+
+    protected fun updateViewBottomMargin(view: View?) {
+        val target = view ?: return
+        val params = target.layoutParams as? ViewGroup.MarginLayoutParams ?: return
+        if (!mStoredBottomMargins.containsKey(target)) {
+            mStoredBottomMargins[target] = params.bottomMargin
+        }
+        val newBottomMargin = (mStoredBottomMargins[target] ?: 0) + (listener?.getGalleryStripHeight() ?: 0)
+        if (params.bottomMargin != newBottomMargin) {
+            params.bottomMargin = newBottomMargin
+            target.layoutParams = params
+        }
     }
 
     fun getMediumExtendedDetails(medium: Medium): String {

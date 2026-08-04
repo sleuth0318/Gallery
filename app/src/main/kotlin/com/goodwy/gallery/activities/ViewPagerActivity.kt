@@ -23,6 +23,7 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
+import android.view.HapticFeedbackConstants
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
@@ -32,6 +33,9 @@ import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
 import androidx.print.PrintHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -48,6 +52,7 @@ import com.goodwy.commons.helpers.*
 import com.goodwy.commons.models.FileDirItem
 import com.goodwy.gallery.BuildConfig
 import com.goodwy.gallery.R
+import com.goodwy.gallery.adapters.GalleryStripAdapter
 import com.goodwy.gallery.adapters.MyPagerAdapter
 import com.goodwy.gallery.asynctasks.GetMediaAsynctask
 import com.goodwy.gallery.databinding.ActivityMediumBinding
@@ -65,6 +70,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import kotlin.math.abs
 import kotlin.math.min
 
 @Suppress("UNCHECKED_CAST")
@@ -94,6 +100,11 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
     private var mMediaFiles = ArrayList<Medium>()
     private var mFavoritePaths = ArrayList<String>()
     private var mIgnoredPaths = ArrayList<String>()
+
+    private var mGalleryStripMedia = ArrayList<Medium>()
+    private var mGalleryStripAdapter: GalleryStripAdapter? = null
+    private var mGalleryStripLockedPath = ""
+    private var mStripWasUserDragged = false
     private var mOriginalBrightness: Float? = null
 
     private var mVolumeController: VolumeController? = null
@@ -399,6 +410,8 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
             else -> mPath.getParentPath()
         }
         binding.mediumViewerToolbar.title = mPath.getFilenameFromPath()
+
+        setupGalleryStrip()
 
         binding.viewPager.onGlobalLayout {
             if (!isDestroyed) {
@@ -1306,6 +1319,7 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
         refreshMenuItems()
         checkOrientation()
         initBottomActions()
+        updateGalleryStrip()
     }
 
     private fun getPositionInList(items: MutableList<Medium>): Int {
@@ -1381,6 +1395,9 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
 
     override fun isFullScreen() = mIsFullScreen
 
+    override fun getGalleryStripHeight(): Int =
+        if (shouldShowGalleryStrip() && !mIsFullScreen) resources.getDimensionPixelSize(R.dimen.gallery_strip_height) else 0
+
     override fun goToPrevItem() {
         binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, false)
         checkOrientation()
@@ -1443,6 +1460,16 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
             }.withEndAction {
                 binding.mediumViewerAppbar.beVisibleIf(newAlpha == 1f)
             }.start()
+
+            if (shouldShowGalleryStrip()) {
+                binding.galleryStrip.animate().alpha(newAlpha).withStartAction {
+                    binding.galleryStrip.beVisible()
+                }.withEndAction {
+                    binding.galleryStrip.beVisibleIf(newAlpha == 1f)
+                }.start()
+            }
+
+            (binding.viewPager.adapter as? MyPagerAdapter)?.updateGalleryStripOffsets()
         }
     }
 
@@ -1464,6 +1491,135 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
         }
     }
 
+    private fun setupGalleryStrip() {
+        binding.galleryStrip.apply {
+            layoutManager = LinearLayoutManager(this@ViewPagerActivity, LinearLayoutManager.HORIZONTAL, false)
+            val halfViewportWidth = resources.displayMetrics.widthPixels / 2f
+            setPadding(halfViewportWidth.toInt(), paddingTop, halfViewportWidth.toInt(), paddingBottom)
+            clipToPadding = false
+            overScrollMode = View.OVER_SCROLL_NEVER
+            LinearSnapHelper().attachToRecyclerView(this)
+        }
+
+        mGalleryStripAdapter = GalleryStripAdapter(this, mGalleryStripMedia) { medium ->
+            galleryStripHaptic()
+            val position = mMediaFiles.indexOfFirst { it.path == medium.path }
+            if (position != -1) {
+                binding.viewPager.setCurrentItem(position, false)
+            }
+        }
+        binding.galleryStrip.adapter = mGalleryStripAdapter
+        binding.galleryStrip.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                    mStripWasUserDragged = true
+                    syncViewerFromStrip()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (mStripWasUserDragged) {
+                        mStripWasUserDragged = false
+                        syncViewerFromStrip()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun updateGalleryStrip() {
+        val adapter = mGalleryStripAdapter ?: return
+        val currentPath = getCurrentPath()
+        if (mGalleryStripLockedPath.isEmpty() && currentPath.isNotEmpty()) {
+            mGalleryStripLockedPath = currentPath.getParentPath()
+        }
+
+        val lockedPath = mGalleryStripLockedPath.lowercase()
+        mGalleryStripMedia.clear()
+        if (lockedPath.isNotEmpty()) {
+            mGalleryStripMedia.addAll(mMediaFiles.filter { it.parentPath.lowercase() == lockedPath })
+        }
+        adapter.notifyDataSetChanged()
+        centerGalleryStripOnCurrent()
+        updateGalleryStripVisibility()
+    }
+
+    private fun centerGalleryStripOnCurrent() {
+        val currentMedium = getCurrentMedium() ?: return
+        val position = mGalleryStripMedia.indexOfFirst { it.path == currentMedium.path }
+        if (position == RecyclerView.NO_POSITION) {
+            return
+        }
+
+        val recyclerView = binding.galleryStrip
+        val layoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
+        val child = layoutManager.findViewByPosition(position)
+        if (child == null) {
+            recyclerView.scrollToPosition(position)
+            return
+        }
+
+        val viewportCenter = recyclerView.width / 2f
+        val itemCenter = child.left + child.width / 2f
+        val delta = (itemCenter - viewportCenter).toInt()
+        if (abs(delta) > 1) {
+            recyclerView.smoothScrollBy(delta, 0)
+        }
+    }
+
+    private fun syncViewerFromStrip() {
+        val recyclerView = binding.galleryStrip
+        val layoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
+        val centerX = recyclerView.width / 2f
+        val firstVisible = layoutManager.findFirstVisibleItemPosition()
+        val lastVisible = layoutManager.findLastVisibleItemPosition()
+        if (firstVisible == RecyclerView.NO_POSITION || lastVisible == RecyclerView.NO_POSITION) {
+            return
+        }
+
+        var closestPosition = firstVisible
+        var closestDistance = Float.MAX_VALUE
+        for (position in firstVisible..lastVisible) {
+            val child = layoutManager.findViewByPosition(position) ?: continue
+            val childCenter = child.left + child.width / 2f
+            val distance = abs(childCenter - centerX)
+            if (distance < closestDistance) {
+                closestDistance = distance
+                closestPosition = position
+            }
+        }
+
+        val stripMedium = mGalleryStripMedia.getOrNull(closestPosition) ?: return
+        val viewerPosition = mMediaFiles.indexOfFirst { it.path == stripMedium.path }
+        if (viewerPosition == -1) {
+            return
+        }
+
+        if (viewerPosition != binding.viewPager.currentItem) {
+            if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                galleryStripHaptic()
+            }
+            binding.viewPager.setCurrentItem(viewerPosition, false)
+        }
+    }
+
+    private fun galleryStripHaptic() {
+        binding.galleryStrip.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+    }
+
+    private fun shouldShowGalleryStrip(): Boolean = config.showGalleryStrip && mGalleryStripMedia.size > 1
+
+    private fun updateGalleryStripVisibility() {
+        if (shouldShowGalleryStrip()) {
+            binding.galleryStrip.alpha = if (mIsFullScreen) 0f else 1f
+            binding.galleryStrip.beVisibleIf(!mIsFullScreen)
+        } else {
+            binding.galleryStrip.beGone()
+        }
+        (binding.viewPager.adapter as? MyPagerAdapter)?.updateGalleryStripOffsets()
+    }
+
     private fun getCurrentMedia() = if (mAreSlideShowMediaVisible || mRandomSlideshowStopped) mSlideshowMedia else mMediaFiles
 
     private fun getCurrentPath() = getCurrentMedium()?.path ?: ""
@@ -1476,6 +1632,7 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
             updateActionbarTitle()
             refreshMenuItems()
             scheduleSwipe()
+            centerGalleryStripOnCurrent()
         }
     }
 

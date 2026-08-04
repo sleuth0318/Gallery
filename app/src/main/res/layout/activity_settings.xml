@@ -736,6 +736,18 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/settings_show_gallery_strip_holder"
+                        style="@style/SettingsHolderSwitchStyle">
+
+                        <com.goodwy.commons.views.MyMaterialSwitch
+                            android:id="@+id/settings_show_gallery_strip"
+                            style="@style/SettingsSwitchStyle"
+                            android:text="@string/show_gallery_strip"
+                            app:switchPadding="@dimen/bigger_margin" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
                         android:id="@+id/settings_keep_screen_on_fullscreen_photos_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
