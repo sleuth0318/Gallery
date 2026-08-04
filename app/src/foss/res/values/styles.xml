@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Compact selectable text chip used by the video editor sub-panels. -->
+    <style name="VeChip">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:background">@drawable/ripple_all_corners</item>
+        <item name="android:paddingStart">@dimen/normal_margin</item>
+        <item name="android:paddingEnd">@dimen/normal_margin</item>
+        <item name="android:paddingTop">@dimen/small_margin</item>
+        <item name="android:paddingBottom">@dimen/small_margin</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/smaller_text_size</item>
+    </style>
+</resources>

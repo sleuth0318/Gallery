@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- foss-flavor additions only: registers the in-app video editor so the
+     implicit ACTION_EDIT(video/*) intent fired by openEditorIntent()
+     (goodwy-commons) resolves inside the app instead of failing with
+     "No valid app found". Nothing else is modified. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name=".activities.VideoEditActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="true"
+            android:label="@string/editor">
+
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="video/*" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

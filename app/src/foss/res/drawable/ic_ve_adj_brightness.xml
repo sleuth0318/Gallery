@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sun: filled core + 8 rays (Material wb_sunny geometry, Apache-2.0). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,7.5 a4.5,4.5 0 1 1 0,9 a4.5,4.5 0 1 1 0,-9 Z" />
+    <path
+        android:pathData="M12,2.4 L12,4.6 M12,19.4 L12,21.6 M2.4,12 L4.6,12 M19.4,12 L21.6,12 M5.2,5.2 L6.8,6.8 M17.2,17.2 L18.8,18.8 M18.8,5.2 L17.2,6.8 M6.8,17.2 L5.2,18.8"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round" />
+</vector>

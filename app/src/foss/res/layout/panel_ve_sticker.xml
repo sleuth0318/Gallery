@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/small_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/normal_margin"
+        android:paddingEnd="@dimen/normal_margin">
+
+        <com.goodwy.commons.views.MyTextView
+            android:id="@+id/ve_sticker_tab_emojis"
+            style="@style/VeChip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ve_sticker_emoticons" />
+
+        <com.goodwy.commons.views.MyTextView
+            android:id="@+id/ve_sticker_tab_shapes"
+            style="@style/VeChip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ve_sticker_shapes" />
+
+        <ImageView
+            android:id="@+id/ve_sticker_color"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="@dimen/small_margin"
+            android:contentDescription="@string/ve_brush_color" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ve_sticker_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="112dp"
+        android:orientation="horizontal" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/ve_sticker_hint"
+        android:textColor="#B3FFFFFF"
+        android:textSize="@dimen/smaller_text_size" />
+</LinearLayout>

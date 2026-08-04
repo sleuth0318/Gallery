@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Eyedropper (Material colorize geometry, Apache-2.0). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20.71,5.63 l-2.34,-2.34 c-0.39,-0.39 -1.02,-0.39 -1.41,0 l-3.12,3.12 -1.23,-1.21 -1.41,1.41 1.41,1.41 L3.29,16.33 3,21 l4.67,-0.29 8.32,-8.32 1.41,1.41 1.41,-1.41 -1.22,-1.23 3.12,-3.12 c0.39,-0.39 0.39,-1.02 0,-1.42 z M6.92,19 L5,17.08 l8.06,-8.07 1.91,1.92 L6.92,19 z" />
+</vector>

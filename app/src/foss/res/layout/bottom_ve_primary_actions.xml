@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Bottom primary row — same treatment as the image editor's
+  bottom_editor_primary_actions.xml: text-button Cancel (left) / "Save as"
+  (right) with ripple_all_corners. The 9 video tools live in the full-width
+  scrollable row directly above this one (ve_tool_row in the activity layout).
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_ve_primary_actions_wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/bottom_actions_height">
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/bottom_primary_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:background="@drawable/ripple_all_corners"
+        android:contentDescription="@string/cancel"
+        android:ellipsize="end"
+        android:lines="1"
+        android:padding="@dimen/medium_margin"
+        android:text="@string/cancel"
+        android:textSize="@dimen/bigger_text_size"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ve_primary_spacer"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="160dp" />
+
+    <Space
+        android:id="@+id/ve_primary_spacer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bottom_primary_save"
+        app:layout_constraintStart_toEndOf="@id/bottom_primary_cancel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/bottom_primary_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:background="@drawable/ripple_all_corners"
+        android:contentDescription="@string/save_as"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:lines="1"
+        android:padding="@dimen/medium_margin"
+        android:text="@string/save_as"
+        android:textSize="@dimen/bigger_text_size"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ve_primary_spacer"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="160dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

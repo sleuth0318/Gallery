@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bold ring + W. Single color so the adapter's accent/white tint stays legible. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M12,5.2 a6.8,6.8 0 1 1 0,13.6 a6.8,6.8 0 1 1 0,-13.6 Z"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3.2" />
+    <path
+        android:pathData="M9,8.6 L10.7,15.4 L12,10.9 L13.3,15.4 L15,8.6"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

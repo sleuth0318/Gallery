@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Strings for the foss in-app video editor. Kept in the foss source set so the
+  shared main/res/values/strings.xml is not touched. Several video-editing
+  strings (invalid_video_path, video_editing_failed, video_edited_successfully,
+  ...) already exist in main and are reused directly.
+-->
+<resources>
+    <!-- Tool names (bottom bar) -->
+    <string name="ve_trim">Trim</string>
+    <string name="ve_transform">Transform</string>
+    <string name="ve_filter">Filter</string>
+    <string name="ve_adjust">Adjust</string>
+    <string name="ve_focus">Focus</string>
+    <string name="ve_sticker">Sticker</string>
+    <string name="ve_text">Text</string>
+    <string name="ve_brush">Brush</string>
+    <string name="ve_overlay">Overlay</string>
+
+    <!-- Transport / toolbar -->
+    <string name="ve_undo">Undo</string>
+    <string name="ve_redo">Redo</string>
+    <string name="ve_mute">Mute</string>
+    <string name="ve_unmute">Unmute</string>
+    <string name="ve_play">Play</string>
+    <string name="ve_pause">Pause</string>
+
+    <!-- Trim -->
+    <string name="ve_trim_start">Start: %s</string>
+    <string name="ve_trim_end">End: %s</string>
+    <string name="ve_trim_duration">Duration: %s</string>
+
+    <!-- Transform -->
+    <string name="ve_rotate">Rotate</string>
+    <string name="ve_flip_horizontal">Flip horizontal</string>
+    <string name="ve_flip_vertical">Flip vertical</string>
+    <string name="ve_aspect_original">Original</string>
+    <string name="ve_aspect_free">Free</string>
+
+    <!-- Adjust -->
+    <string name="ve_brightness">Brightness</string>
+    <string name="ve_contrast">Contrast</string>
+    <string name="ve_saturation">Saturation</string>
+    <string name="ve_clarity">Clarity</string>
+    <string name="ve_shadows">Shadows</string>
+    <string name="ve_highlights">Highlights</string>
+    <string name="ve_exposure">Exposure</string>
+    <string name="ve_gamma">Gamma</string>
+    <string name="ve_blacks">Blacks</string>
+    <string name="ve_whites">Whites</string>
+    <string name="ve_temperature">Temperature</string>
+    <string name="ve_sharpness">Sharpness</string>
+    <string name="ve_reset">Reset</string>
+
+    <!-- Focus -->
+    <string name="ve_focus_none">None</string>
+    <string name="ve_focus_gaussian">Gaussian</string>
+    <string name="ve_focus_radial">Radial</string>
+    <string name="ve_focus_linear">Linear</string>
+    <string name="ve_focus_strength">Strength</string>
+    <string name="ve_focus_drag_hint">Drag on the video to position the focus point</string>
+
+    <!-- Sticker -->
+    <string name="ve_sticker_emoticons">Emoticons</string>
+    <string name="ve_sticker_shapes">Shapes</string>
+    <string name="ve_sticker_added">Sticker added — drag to move, pinch to resize</string>
+
+    <!-- Text -->
+    <string name="ve_text_hint">Enter text…</string>
+    <string name="ve_text_add">Add text</string>
+    <string name="ve_text_edit">Edit text</string>
+    <string name="ve_text_color">Text color</string>
+    <string name="ve_text_added">Text added — drag to move, pinch to resize</string>
+
+    <!-- Brush -->
+    <string name="ve_brush_color">Brush color</string>
+    <string name="ve_brush_size">Brush size</string>
+    <string name="ve_brush_undo">Undo stroke</string>
+
+    <!-- Overlay previews -->
+    <string name="ve_overlay_none">None</string>
+
+    <!-- Export / save -->
+    <string name="ve_exporting">Rendering video…</string>
+    <string name="ve_saving_video">Saving video…</string>
+    <string name="ve_export_failed">Video export failed: %s</string>
+    <string name="ve_overwrite_video">Overwrite original</string>
+
+    <!-- Misc -->
+    <string name="ve_close">Close</string>
+    <string name="ve_selected_item_hint">Drag to move · pinch to resize · twist to rotate</string>
+    <string name="ve_sticker_hint">Drag to move · pinch to resize · twist to rotate\nHold to delete</string>
+</resources>

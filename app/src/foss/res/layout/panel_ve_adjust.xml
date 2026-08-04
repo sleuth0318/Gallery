@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adjust tool: a full-width chips row with all adjustment slots (Reset,
+  Brightness, Contrast, Saturation, Clarity, Shadows, Highlights, Exposure,
+  Gamma, Blacks, Whites, Temperature, Sharpness). Tapping a slot reveals the
+  shared slider row on top of the chips; Reset restores every slot to 0.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/small_margin">
+
+    <LinearLayout
+        android:id="@+id/ve_adjust_slider_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/normal_margin"
+        android:paddingEnd="@dimen/normal_margin"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/ve_adjust_name"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/smaller_text_size"
+            tools:text="Exposure" />
+
+        <SeekBar
+            android:id="@+id/ve_adjust_seek"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="200"
+            android:progress="100" />
+
+        <TextView
+            android:id="@+id/ve_adjust_value"
+            android:layout_width="44dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/smaller_text_size"
+            tools:text="+25" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ve_adjust_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadingEdge="horizontal"
+        android:fadingEdgeLength="24dp"
+        android:orientation="horizontal"
+        android:requiresFadingEdge="horizontal" />
+</LinearLayout>

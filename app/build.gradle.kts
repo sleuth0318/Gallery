@@ -194,6 +194,11 @@ dependencies {
     "gplayImplementation"(libs.goodwy.commons.gplay)
     "fossImplementation"(libs.goodwy.commons.foss)
     "rustoreImplementation"(libs.goodwy.commons.rustore)
+
+    // In-app video editor (foss flavor only — Apache-2.0 Media3 libs, no proprietary deps)
+    "fossImplementation"(libs.androidx.media3.transformer)
+    "fossImplementation"(libs.androidx.media3.effect)
+    "fossImplementation"(libs.androidx.media3.ui)
     implementation(libs.behavio.rule)
     implementation(libs.rx.animation)
 }

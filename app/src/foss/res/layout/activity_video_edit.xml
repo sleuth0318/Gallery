@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Video editor screen. Structural twin of the image editor's activity_edit.xml
+  (same app bar, toolbar styling, bottom actions and gradient shadow), with the
+  video stage, transport row and tool sub-panels in between.
+
+  The preview (PlayerView + overlay stage) is anchored between the app bar and
+  the transport row and NEVER resizes: the tool sub-panels float on solid black
+  above the lower strip of the preview instead of squashing it, so framing and
+  the crop geometry stay constant from the first tool tap until export.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ve_coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.goodwy.commons.views.MyAppBarLayout
+        android:id="@+id/ve_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/ve_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:menu="@menu/menu_video_editor"
+            app:title="@string/editor"
+            app:titleTextAppearance="@style/AppTheme.ActionBar.TitleTextStyle" />
+
+    </com.goodwy.commons.views.MyAppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ve_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/ve_player"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:resize_mode="fit"
+            app:surface_type="surface_view"
+            app:use_controller="false" />
+
+        <com.goodwy.gallery.videoeditor.views.OverlayStageView
+            android:id="@+id/ve_overlay_stage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/ve_bottom_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_editor_actions_shadow_height"
+            android:background="@drawable/gradient_background"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ve_transport_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/small_margin"
+            android:paddingEnd="@dimen/small_margin"
+            app:layout_constraintBottom_toTopOf="@id/ve_tool_row">
+
+            <ImageView
+                android:id="@+id/ve_btn_mute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/ve_mute"
+                android:padding="@dimen/normal_margin"
+                android:src="@drawable/ic_ve_volume_on" />
+
+            <TextView
+                android:id="@+id/ve_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/small_margin"
+                android:paddingEnd="@dimen/small_margin"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/smaller_text_size"
+                tools:text="0:07 / 0:24" />
+
+            <SeekBar
+                android:id="@+id/ve_seek"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/ve_btn_play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/ve_play"
+                android:padding="@dimen/normal_margin"
+                android:src="@drawable/ic_play_vector" />
+
+        </LinearLayout>
+
+        <!-- Tool sub-panels (one visible at a time). They draw on solid black
+             ON TOP of the preview's lower strip (they come after the stage in
+             document order), so opening/switching tools never resizes the
+             video. clickable=true keeps touches from falling through to the
+             overlay stage. -->
+        <include
+            android:id="@+id/ve_panel_trim"
+            layout="@layout/panel_ve_trim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:clickable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row" />
+
+        <include
+            android:id="@+id/ve_panel_transform"
+            layout="@layout/panel_ve_transform"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:clickable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row" />
+
+        <include
+            android:id="@+id/ve_panel_filter"
+            layout="@layout/panel_ve_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:clickable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row" />
+
+        <include
+            android:id="@+id/ve_panel_adjust"
+            layout="@layout/panel_ve_adjust"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:clickable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row" />
+
+        <include
+            android:id="@+id/ve_panel_focus"
+            layout="@layout/panel_ve_focus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:clickable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row" />
+
+        <include
+            android:id="@+id/ve_panel_sticker"
+            layout="@layout/panel_ve_sticker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:clickable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row" />
+
+        <include
+            android:id="@+id/ve_panel_brush"
+            layout="@layout/panel_ve_brush"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:clickable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row" />
+
+        <include
+            android:id="@+id/ve_panel_overlay"
+            layout="@layout/panel_ve_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:clickable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ve_transport_row" />
+
+        <!-- Full-width scrollable row with all 9 tools (icon + label), same
+             borderless-ripple treatment as the image editor's bottom icons.
+             Sub-panels open above the transport row; the tool row stays
+             visible for fast switching. -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ve_tool_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="24dp"
+            android:orientation="horizontal"
+            android:requiresFadingEdge="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/ve_primary_actions" />
+
+        <include
+            android:id="@+id/ve_primary_actions"
+            layout="@layout/bottom_ve_primary_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
