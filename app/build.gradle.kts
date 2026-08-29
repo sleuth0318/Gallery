@@ -194,6 +194,13 @@ dependencies {
     "gplayImplementation"(libs.goodwy.commons.gplay)
     "fossImplementation"(libs.goodwy.commons.foss)
     "rustoreImplementation"(libs.goodwy.commons.rustore)
+
+    // In-app media editor (video + image) — Apache-2.0 Media3 libs, no proprietary deps.
+    // Moved from fossImplementation to implementation with the M19 unification: the
+    // editor now lives in the main source set and serves every flavor.
+    implementation(libs.androidx.media3.transformer)
+    implementation(libs.androidx.media3.effect)
+    implementation(libs.androidx.media3.ui)
     implementation(libs.behavio.rule)
     implementation(libs.rx.animation)
 }

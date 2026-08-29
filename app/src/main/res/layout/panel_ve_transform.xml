@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ve_btn_rotate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/ve_rotate"
+            android:padding="@dimen/normal_margin"
+            android:src="@drawable/ic_rotate_right_vector" />
+
+        <ImageView
+            android:id="@+id/ve_btn_flip_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/ve_flip_horizontal"
+            android:padding="@dimen/normal_margin"
+            android:src="@drawable/ic_flip_horizontally_vector" />
+
+        <ImageView
+            android:id="@+id/ve_btn_flip_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/ve_flip_vertical"
+            android:padding="@dimen/normal_margin"
+            android:src="@drawable/ic_flip_vertically_vector" />
+    </LinearLayout>
+
+    <!-- straighten at an arbitrary angle: reset-to-0° icon at the left of a
+         tape-style dotted slider (fading ends, 6dp 0° tick scrolling with the
+         angle, current value centered on top) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ve_angle_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/ve_reset"
+            android:padding="@dimen/normal_margin"
+            android:src="@drawable/ic_ve_adj_reset" />
+
+        <com.goodwy.gallery.videoeditor.views.VeAngleSliderView
+            android:id="@+id/ve_angle_slider"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/ve_straighten" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ve_aspect_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/small_margin" />
+</LinearLayout>

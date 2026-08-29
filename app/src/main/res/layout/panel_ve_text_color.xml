@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text tool sub-panel: centered basic color swatches + full-picker chip.
+     Swatches are added in code into ve_text_color_swatches; the row centers
+     when it fits and scrolls when it doesn't. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/small_margin"
+    android:paddingEnd="@dimen/small_margin"
+    android:paddingBottom="@dimen/small_margin">
+
+    <HorizontalScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/ve_text_color_swatches"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_text_color_custom"
+        style="@style/VeChip"
+        android:text="@string/ve_text_color_custom" />
+</LinearLayout>

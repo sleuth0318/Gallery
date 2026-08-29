@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One swatch cell of the brush color panel; position 0 doubles as the
+     pipette (jump back to the magnifying target). -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:background="?attr/selectableItemBackground">
+
+    <View
+        android:id="@+id/ve_swatch_box"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp" />
+
+    <ImageView
+        android:id="@+id/ve_swatch_pipette"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/ve_pick_color"
+        android:src="@drawable/ic_ve_pipette"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/ve_swatch_selected"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="bottom"
+        android:visibility="gone" />
+</FrameLayout>

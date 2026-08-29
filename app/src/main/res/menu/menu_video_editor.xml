@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mirrors the app's existing image-editor toolbar menu (menu_editor.xml):
+     same item ids, icons, visibility rules and ordering, so the video editor's
+     top bar looks and behaves identically (check/undo/redo + overflow
+     "overwrite_original" + pencil "edit with" + share). -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/undo"
+        android:icon="@drawable/ic_undo_gray"
+        android:title="@string/ve_undo"
+        android:enabled="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/redo"
+        android:icon="@drawable/ic_redo_gray"
+        android:title="@string/ve_redo"
+        android:enabled="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/overwrite_original"
+        android:icon="@drawable/ic_check_vector"
+        android:title="@string/overwrite_original"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_edit_with"
+        android:title="@string/edit_with"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_share_vector"
+        android:title="@string/share"
+        app:showAsAction="ifRoom" />
+</menu>

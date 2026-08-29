@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- semi-transparent BLACK behind the emoticons/shapes grid so stickers stay
+     readable over white media (M19q: was 35% grey); single constant to tune -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="#59000000" />
+    <corners android:radius="10dp" />
+</shape>

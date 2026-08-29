@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Bottom primary row — two modes (reference: tool_bar.png / tool_selected.png):
+   - idle: text-button Cancel (left) / "Save as" (right), ripple_all_corners;
+   - a tool is active: the text buttons hide and the strip shows the
+     ✕ / TOOL NAME / ✓ trio instead (✕ = discard this tool's edits,
+     ✓ = keep them; both close back to the tool list. For camera-action.CROP
+     intents ✕ cancels the intent outright and ✓ also fires the Crop save).
+  The 9 video tools live in the full-width scrollable row that occupies the
+  band directly above this strip while idle (ve_tool_row in the activity).
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_ve_primary_actions_wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/bottom_actions_height">
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/bottom_primary_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:background="@drawable/ripple_all_corners"
+        android:contentDescription="@string/cancel"
+        android:ellipsize="end"
+        android:lines="1"
+        android:padding="@dimen/medium_margin"
+        android:text="@string/cancel"
+        android:textSize="@dimen/bigger_text_size"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ve_primary_spacer"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="160dp" />
+
+    <Space
+        android:id="@+id/ve_primary_spacer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bottom_primary_save"
+        app:layout_constraintStart_toEndOf="@id/bottom_primary_cancel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/bottom_primary_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:background="@drawable/ripple_all_corners"
+        android:contentDescription="@string/save_as"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:lines="1"
+        android:padding="@dimen/medium_margin"
+        android:text="@string/save_as"
+        android:textSize="@dimen/bigger_text_size"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ve_primary_spacer"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="160dp" />
+
+    <!-- tool-active mode (all three GONE while idle) -->
+
+    <ImageView
+        android:id="@+id/bottom_primary_tool_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:background="@drawable/ripple_all_corners"
+        android:contentDescription="@string/cancel"
+        android:padding="@dimen/medium_margin"
+        android:src="@drawable/ic_ve_close"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/bottom_primary_tool_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="1"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/bigger_text_size"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bottom_primary_tool_confirm"
+        app:layout_constraintStart_toEndOf="@id/bottom_primary_tool_cancel"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="TRANSFORM" />
+
+    <ImageView
+        android:id="@+id/bottom_primary_tool_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:background="@drawable/ripple_all_corners"
+        android:contentDescription="@string/ve_apply"
+        android:padding="@dimen/medium_margin"
+        android:src="@drawable/ic_check_vector"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

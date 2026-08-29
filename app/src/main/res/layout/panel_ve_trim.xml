@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/normal_margin"
+    android:paddingEnd="@dimen/normal_margin">
+
+    <com.goodwy.gallery.videoeditor.views.TrimSliderView
+        android:id="@+id/ve_trim_slider"
+        android:layout_width="match_parent"
+        android:layout_height="64dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/ve_trim_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/smaller_text_size"
+            tools:text="Start: 0:00" />
+
+        <TextView
+            android:id="@+id/ve_trim_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/smaller_text_size"
+            tools:text="Duration: 0:24" />
+
+        <TextView
+            android:id="@+id/ve_trim_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/smaller_text_size"
+            tools:text="End: 0:24" />
+    </LinearLayout>
+</LinearLayout>

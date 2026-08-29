@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Brush "HDR" color panel (reference: color_panel.png): hue bar / S-V square /
+  opacity slider in VeHsvPickerView, with the swatch strip beneath (first cell
+  = pipette back to the magnifier). Anchored into the tool band; the ✕/✓ of
+  the main strip confirm or discard while its title reads "BRUSH COLOR".
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/small_margin">
+
+    <com.goodwy.gallery.videoeditor.views.VeHsvPickerView
+        android:id="@+id/ve_hsv_picker"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="@dimen/normal_margin"
+        android:layout_marginEnd="@dimen/normal_margin" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ve_color_swatches"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:overScrollMode="never" />
+</LinearLayout>

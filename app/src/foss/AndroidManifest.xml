@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  foss-flavor manifest. Historically this registered the foss-only video
+  editor; since the M19 unification BOTH the image and the video editor are
+  the single main-source-set VideoEditActivity, declared in the main manifest
+  with image/* + video/* EDIT filters and the camera-action.CROP contract.
+  Nothing flavor-specific remains here.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application />
+
+</manifest>

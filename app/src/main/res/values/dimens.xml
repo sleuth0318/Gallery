@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- unified editor: fixed outer margin around the preview on all 4 sides
+         (PlayerView + OverlayStageView, activity_video_edit.xml) -->
+    <dimen name="ve_preview_margin">32dp</dimen>
     <dimen name="dir_tmb_size">150dp</dimen>
     <dimen name="medium_tmb_size">100dp</dimen>
     <dimen name="sd_card_icon_size">20dp</dimen>

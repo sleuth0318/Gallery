@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text tool sub-panel: text-box background (custom picker / transparent /
+     semi-transparent / white / black). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/small_margin">
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_text_bg_custom"
+        style="@style/VeChip"
+        android:text="@string/ve_text_bg_custom" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_text_bg_none"
+        style="@style/VeChip"
+        android:text="@string/ve_text_bg_none" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_text_bg_semi"
+        style="@style/VeChip"
+        android:text="@string/ve_text_bg_semi" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_text_bg_white"
+        style="@style/VeChip"
+        android:text="@string/ve_text_bg_white" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_text_bg_black"
+        style="@style/VeChip"
+        android:text="@string/ve_text_bg_black" />
+</LinearLayout>

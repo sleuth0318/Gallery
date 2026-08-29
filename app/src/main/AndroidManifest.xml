@@ -270,18 +270,29 @@
         </activity>
 
         <activity
-            android:name="com.goodwy.gallery.activities.EditActivity"
-            android:configChanges="orientation"
+            android:name="com.goodwy.gallery.activities.VideoEditActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true"
             android:label="@string/editor">
 
-            <intent-filter android:name="foss-editor">
+            <intent-filter>
 
                 <action android:name="android.intent.action.EDIT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="image/*" />
+
+            </intent-filter>
+
+            <intent-filter>
+
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="video/*" />
+
             </intent-filter>
 
             <intent-filter>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One folder tile of the sticker gallery picker, styled after the app's own
+     directory item: SQUARE rounded cover, bold name (up to 2 lines), greyed
+     item count beneath (interface.jpg). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="6dp"
+    android:layout_marginVertical="2dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingTop="8dp">
+
+    <com.goodwy.commons.views.MySquareImageView
+        android:id="@+id/ve_folder_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ve_card_bg"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        tools:background="#333" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_folder_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingHorizontal="2dp"
+        android:paddingTop="6dp"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="Camera" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_folder_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-2dp"
+        android:alpha="0.6"
+        android:ellipsize="end"
+        android:lines="1"
+        android:paddingHorizontal="2dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        tools:text="349 items" />
+</LinearLayout>

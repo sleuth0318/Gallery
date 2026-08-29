@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- rounded card placeholder behind picker thumbnails (clipToOutline target) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="#26262A" />
+    <corners android:radius="10dp" />
+</shape>

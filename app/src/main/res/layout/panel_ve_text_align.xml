@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text tool sub-panel: left / center / right text alignment. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/small_margin">
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_text_align_left"
+        style="@style/VeChip"
+        android:text="@string/ve_text_align_left" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_text_align_center"
+        style="@style/VeChip"
+        android:text="@string/ve_text_align_center" />
+
+    <com.goodwy.commons.views.MyTextView
+        android:id="@+id/ve_text_align_right"
+        style="@style/VeChip"
+        android:text="@string/ve_text_align_right" />
+</LinearLayout>

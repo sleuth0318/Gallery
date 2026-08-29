@@ -32,3 +32,16 @@ native <methods>;
 -dontwarn org.openjsse.javax.net.ssl.SSLParameters
 -dontwarn org.openjsse.javax.net.ssl.SSLSocket
 -dontwarn org.openjsse.net.ssl.OpenJSSE
+
+# CustomizationPrimaryHook (com.goodwy.gallery.helpers) mirrors these private
+# members of commons' CustomizationActivity by reflection — keep their names.
+-keep class com.goodwy.commons.activities.CustomizationActivity {
+    private int curPrimaryColor;
+    private int curBackgroundColor;
+    private boolean hasUnsavedChanges;
+    private void colorChanged();
+    private void updateColorTheme(int, boolean);
+    private int getCurrentThemeId();
+    private void updateTopBarColors();
+    private int getCurrentBackgroundColor();
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Sticker tool: 3 primary features (Gallery / Emoticons / Shapes) as
+  icon+label chips — the same swap pattern as the main tool row: picking a
+  feature REPLACES the chip row with that feature's content. Gallery opens the
+  image picker instantly (no in-panel content); the shapes color dot only
+  shows while Shapes is open.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/small_margin">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ve_sticker_features"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:overScrollMode="never" />
+
+    <ImageView
+        android:id="@+id/ve_sticker_color"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/small_margin"
+        android:contentDescription="@string/ve_brush_color"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ve_sticker_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="112dp"
+        android:background="@drawable/ve_sticker_grid_bg"
+        android:orientation="horizontal"
+        android:padding="6dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/ve_sticker_hint"
+        android:textColor="#B3FFFFFF"
+        android:textSize="@dimen/smaller_text_size" />
+</LinearLayout>
