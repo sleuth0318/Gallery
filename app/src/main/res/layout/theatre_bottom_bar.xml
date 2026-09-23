@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/theatre_bottom_bar_holder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/normal_margin"
+    android:paddingEnd="@dimen/normal_margin">
+
+    <TextView
+        android:id="@+id/theatre_curr_time"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:gravity="bottom"
+        android:paddingHorizontal="@dimen/activity_margin"
+        android:shadowColor="@color/default_background_color"
+        android:shadowRadius="2"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="0:11" />
+
+    <TextView
+        android:id="@+id/theatre_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:gravity="bottom"
+        android:paddingHorizontal="@dimen/activity_margin"
+        android:shadowColor="@color/default_background_color"
+        android:shadowRadius="2"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1:35:03" />
+
+    <com.goodwy.commons.views.MySeekBar
+        android:id="@+id/theatre_seekbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/activity_margin"
+        android:paddingBottom="@dimen/activity_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/theatre_curr_time" />
+
+    <ImageView
+        android:id="@+id/theatre_tracks_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_margin"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/theatre_tracks"
+        android:padding="@dimen/medium_margin"
+        android:src="@drawable/ic_theatre_tracks_vector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/theatre_seekbar" />
+
+    <ImageView
+        android:id="@+id/theatre_rotate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/theatre_rotate_orientation"
+        android:padding="@dimen/medium_margin"
+        android:src="@drawable/ic_rotate_right_vector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/theatre_tracks_button" />
+
+    <ImageView
+        android:id="@+id/theatre_play_pause"
+        android:layout_width="@dimen/video_player_play_pause_size"
+        android:layout_height="@dimen/video_player_play_pause_size"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/playpause"
+        android:src="@drawable/ic_play_outline_vector"
+        app:layout_constraintBottom_toBottomOf="@+id/theatre_tracks_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/theatre_tracks_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

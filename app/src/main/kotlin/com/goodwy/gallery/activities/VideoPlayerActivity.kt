@@ -3,7 +3,13 @@
 package com.goodwy.gallery.activities
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent
+import android.app.PictureInPictureParams
+import android.app.RemoteAction
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
@@ -13,10 +19,13 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.SurfaceTexture
+import android.graphics.drawable.Icon
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
+import android.util.Rational
 import android.view.GestureDetector
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
@@ -24,10 +33,12 @@ import android.view.Surface
 import android.view.TextureView
 import android.view.View
 import android.view.ViewConfiguration
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.media3.common.AudioAttributes
@@ -67,6 +78,24 @@ open class VideoPlayerActivity : BaseViewerActivity(), SeekBar.OnSeekBarChangeLi
         private const val PLAY_WHEN_READY_DRAG_DELAY = 100L
         private const val UPDATE_INTERVAL_MS = 250L
         private const val TOUCH_SLOP_DIVIDER = 3
+
+        private const val PIP_ACTION_PLAY = "com.goodwy.gallery.PIP_ACTION_PLAY"
+        private const val PIP_ACTION_SEEK = "com.goodwy.gallery.PIP_ACTION_SEEK"
+        private const val PIP_EXTRA_SEEK_FORWARD = "PIP_EXTRA_SEEK_FORWARD"
+        private const val PIP_REQUEST_PLAY_PAUSE = 6101
+        private const val PIP_REQUEST_SEEK = 6102
+    }
+
+    private val mPipActionReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            when (intent.action) {
+                PIP_ACTION_PLAY -> {
+                    togglePlayPause()
+                    updatePipActions()
+                }
+                PIP_ACTION_SEEK -> doSkip(intent.getBooleanExtra(PIP_EXTRA_SEEK_FORWARD, false))
+            }
+        }
     }
 
     private var mIsFullscreen = false
@@ -93,6 +122,8 @@ open class VideoPlayerActivity : BaseViewerActivity(), SeekBar.OnSeekBarChangeLi
     private var mVolumeController: VolumeController? = null
 
     private var mIgnoreCloseDown = false
+    private var mUserTriggeredExternalNav = false
+    private var mWasInPip = false
     private var mTouchSlop = 0
     private var mOriginalBrightness: Float? = null
     private lateinit var mPlaybackSpeedPill: TextView
@@ -130,11 +161,14 @@ open class VideoPlayerActivity : BaseViewerActivity(), SeekBar.OnSeekBarChangeLi
         )
         setupOptionsMenu()
         setupOrientation()
+        registerPipActions()
         initPlayer()
     }
 
     override fun onResume() {
         super.onResume()
+        mUserTriggeredExternalNav = false
+        mWasInPip = false
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
         if (config.blackBackground) {
@@ -147,15 +181,252 @@ open class VideoPlayerActivity : BaseViewerActivity(), SeekBar.OnSeekBarChangeLi
 
     override fun onPause() {
         super.onPause()
-        pauseVideo()
+        // While entering or inside picture-in-picture mode the video must keep playing,
+        // so the pop-up window keeps rendering. The system resumes the activity (and
+        // onResume) once the pop-up is expanded back to fullscreen.
+        if (!isInPictureInPictureMode && !isChangingConfigurations) {
+            pauseVideo()
+        }
 
         if (config.rememberLastVideoPosition && mWasVideoStarted) {
             saveVideoProgress()
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        // Dismissing the picture-in-picture window (the ✕ button) removes this activity
+        // from the task. Pause playback so it doesn't keep running in the background and
+        // persist an exact resume point so the video can be reopened at the same timestamp.
+        if (!isChangingConfigurations && mWasVideoStarted && mExoPlayer != null) {
+            pauseVideo()
+            if (mWasInPip) {
+                savePipResumePoint()
+            } else if (config.rememberLastVideoPosition) {
+                saveVideoProgress()
+            }
+        }
+    }
+
+    private fun savePipResumePoint() {
+        if (config.rememberLastVideoPosition) {
+            saveVideoProgress()
+        }
+        val path = mUri?.toString() ?: return
+        config.pendingPipResumePath = path
+        config.pendingPipResumePositionMs = mExoPlayer?.currentPosition ?: 0L
+
+        // The gesture player has no track selector, so clear any stale track state a
+        // previous theatre session may have left behind.
+        config.pendingPipExternalAudioUri = ""
+        config.pendingPipExternalSubtitleUri = ""
+        config.pendingPipAudioGroup = -1
+        config.pendingPipAudioTrack = -1
+        config.pendingPipTextGroup = -1
+        config.pendingPipTextTrack = -1
+        config.pendingPipTextDisabled = false
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        // User pressed Home while a video is open: pin the video as a pop-up window
+        // with the same aspect ratio as the video and a play/pause action.
+        // Skip when the user is navigating back/menu-exiting (only Home should trigger PIP),
+        // or when we knowingly left for another in-app activity (share/open with).
+        if (mUserTriggeredExternalNav || isFinishing) {
+            mUserTriggeredExternalNav = false
+            return
+        }
+        if (mExoPlayer != null && !isInPictureInPictureMode) {
+            enterPictureInPictureMode(buildPipParams())
+        }
+    }
+
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        if (isInPictureInPictureMode) {
+            mWasInPip = true
+            // Hide the fullscreen chrome; only video content should be visible in the pop-up.
+            binding.videoAppbar.beGone()
+            binding.bottomVideoTimeHolder.root.beGone()
+            binding.videoBottomGradient.beGone()
+            binding.topShadow.beGone()
+            binding.playbackSpeedPill.beGone()
+            binding.videoBrightnessController.beGone()
+            binding.videoVolumeController.beGone()
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            // Re-fit the surface so the whole video is visible inside the pop-up window,
+            // letterboxed if the window ratio differs from the video's ratio.
+            fitSurfaceToPipWindow()
+            // Keep fitting on every subsequent window resize (pinch/double-tap) so the
+            // video never gets cropped once the user shrinks the pop-up below the size
+            // it had at entry.
+            mLastPipFrameWidth = 0
+            mLastPipFrameHeight = 0
+            binding.videoSurfaceFrame.viewTreeObserver.addOnGlobalLayoutListener(mPipResizeListener)
+        } else {
+            // Back to fullscreen: restore the chrome that was visible when we left and
+            // re-fit the surface to the screen after the system restores the window size.
+            binding.videoSurfaceFrame.viewTreeObserver.removeOnGlobalLayoutListener(mPipResizeListener)
+            binding.videoAppbar.beVisible()
+            binding.videoBottomGradient.beVisible()
+            binding.topShadow.beVisible()
+            binding.bottomVideoTimeHolder.root.beVisible()
+            binding.videoBrightnessController.beVisibleIf(config.allowVideoGestures)
+            binding.videoVolumeController.beVisibleIf(config.allowVideoGestures)
+            setVideoSize()
+            binding.videoSurfaceFrame.onGlobalLayout {
+                binding.videoSurfaceFrame.controller.resetState()
+            }
+            if (mIsPlaying) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            }
+            fullscreenToggled(mIsFullscreen)
+            updatePipActions()
+        }
+    }
+
+    private fun registerPipActions() {
+        ContextCompat.registerReceiver(
+            this,
+            mPipActionReceiver,
+            IntentFilter().apply {
+                addAction(PIP_ACTION_PLAY)
+                addAction(PIP_ACTION_SEEK)
+            },
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
+    }
+
+    private fun updatePipActions() {
+        if (isInPictureInPictureMode) {
+            setPictureInPictureParams(buildPipParams())
+        }
+    }
+
+    private fun buildPipParams(): PictureInPictureParams {
+        return PictureInPictureParams.Builder()
+            .setAspectRatio(buildPipAspectRatio())
+            .setActions(buildPipActions().take(maxNumPictureInPictureActions))
+            .apply {
+                // Smoothly scale video content while the user pinches the pop-up; the final
+                // window size is then reflected by a layout pass handled by mPipResizeListener.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    setSeamlessResizeEnabled(true)
+                }
+            }
+            .build()
+    }
+
+    /**
+     * Keeps the surface letterbox-fitted to the pop-up while it is resized (pinch or
+     * double-tap). fitSurfaceToPipWindow() only runs once at enter; without this listener
+     * the surface keeps its enter-time size and the video gets cropped once the window
+     * shrinks below it. The listener is only attached while in picture-in-picture mode.
+     */
+    private var mLastPipFrameWidth = 0
+    private var mLastPipFrameHeight = 0
+
+    private val mPipResizeListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            if (!isInPictureInPictureMode) {
+                return
+            }
+            val frame = binding.videoSurfaceFrame
+            // Skip when nothing changed to avoid re-layout loops from re-applying bounds.
+            if (frame.width == mLastPipFrameWidth && frame.height == mLastPipFrameHeight) {
+                return
+            }
+            if (mVideoSize.x > 0 && mVideoSize.y > 0 && frame.width > 0 && frame.height > 0) {
+                applySurfaceBounds(mVideoSize.x, mVideoSize.y, frame.width, frame.height)
+                mLastPipFrameWidth = frame.width
+                mLastPipFrameHeight = frame.height
+            }
+        }
+    }
+
+    private fun buildPipActions(): List<RemoteAction> {
+        val playing = mExoPlayer?.isPlaying == true
+        val toggleIntent = PendingIntent.getBroadcast(
+            this,
+            PIP_REQUEST_PLAY_PAUSE,
+            Intent(PIP_ACTION_PLAY).setPackage(packageName),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val seekBackwardIntent = PendingIntent.getBroadcast(
+            this,
+            PIP_REQUEST_SEEK,
+            Intent(PIP_ACTION_SEEK).setPackage(packageName).putExtra(PIP_EXTRA_SEEK_FORWARD, false),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val seekForwardIntent = PendingIntent.getBroadcast(
+            this,
+            PIP_REQUEST_SEEK,
+            Intent(PIP_ACTION_SEEK).setPackage(packageName).putExtra(PIP_EXTRA_SEEK_FORWARD, true),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        return listOf(
+            RemoteAction(
+                Icon.createWithResource(this, R.drawable.ic_pip_backward_10_vector),
+                getString(R.string.ve_picture_in_picture_seek_backward),
+                getString(R.string.ve_picture_in_picture_seek_backward),
+                seekBackwardIntent
+            ),
+            RemoteAction(
+                Icon.createWithResource(this, if (playing) R.drawable.ic_pause_vector else R.drawable.ic_play_vector),
+                getString(if (playing) R.string.ve_pause else R.string.ve_play),
+                getString(R.string.ve_picture_in_picture_playback),
+                toggleIntent
+            ),
+            RemoteAction(
+                Icon.createWithResource(this, R.drawable.ic_pip_forward_10_vector),
+                getString(R.string.ve_picture_in_picture_seek_forward),
+                getString(R.string.ve_picture_in_picture_seek_forward),
+                seekForwardIntent
+            )
+        )
+    }
+
+    private fun buildPipAspectRatio(): Rational {
+        val width = mVideoSize.x.coerceAtLeast(1)
+        val height = mVideoSize.y.coerceAtLeast(1)
+        return Rational(width, height)
+    }
+
+    private fun fitSurfaceToPipWindow() {
+        // The system fires this callback once the PiP enter animation has completed and the
+        // pop-up has been laid out, so the surface frame reflects the real pop-up size.
+        binding.videoSurfaceFrame.rootView.onGlobalLayout {
+            val frameWidth = binding.videoSurfaceFrame.width
+            val frameHeight = binding.videoSurfaceFrame.height
+            if (mVideoSize.x > 0 && mVideoSize.y > 0 && frameWidth > 0 && frameHeight > 0) {
+                applySurfaceBounds(mVideoSize.x, mVideoSize.y, frameWidth, frameHeight)
+            }
+        }
+    }
+
+    private fun applySurfaceBounds(videoWidth: Int, videoHeight: Int, boxWidth: Int, boxHeight: Int) {
+        // Fit the whole video inside the given box, preserving the video's aspect ratio.
+        // The surface is centered in the window and letterboxed whenever the box ratio
+        // differs from the video ratio.
+        val videoProportion = videoWidth.toFloat() / videoHeight.toFloat()
+        val boxProportion = boxWidth.toFloat() / boxHeight.toFloat()
+        binding.videoSurface.layoutParams.apply {
+            if (videoProportion > boxProportion) {
+                width = boxWidth
+                height = (boxWidth.toFloat() / videoProportion).toInt()
+            } else {
+                width = (videoProportion * boxHeight.toFloat()).toInt()
+                height = boxHeight
+            }
+            binding.videoSurface.layoutParams = this
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        unregisterReceiver(mPipActionReceiver)
+        binding.videoSurfaceFrame.viewTreeObserver.removeOnGlobalLayoutListener(mPipResizeListener)
         if (!isChangingConfigurations) {
             pauseVideo()
             binding.bottomVideoTimeHolder.videoCurrTime.text = 0.getFormattedDuration()
@@ -181,8 +452,14 @@ open class VideoPlayerActivity : BaseViewerActivity(), SeekBar.OnSeekBarChangeLi
                 R.id.menu_force_landscape -> toggleOrientation(SCREEN_ORIENTATION_LANDSCAPE)
                 R.id.menu_force_landscape_reverse -> toggleOrientation(SCREEN_ORIENTATION_REVERSE_LANDSCAPE)
                 R.id.menu_default_orientation -> toggleOrientation(SCREEN_ORIENTATION_UNSPECIFIED)
-                R.id.menu_open_with -> openPath(mUri!!.toString(), true)
-                R.id.menu_share -> shareMediumPath(mUri!!.toString())
+                R.id.menu_open_with -> {
+                    mUserTriggeredExternalNav = true
+                    openPath(mUri!!.toString(), true)
+                }
+                R.id.menu_share -> {
+                    mUserTriggeredExternalNav = true
+                    shareMediumPath(mUri!!.toString())
+                }
                 else -> return@setOnMenuItemClickListener false
             }
             return@setOnMenuItemClickListener true
@@ -195,6 +472,9 @@ open class VideoPlayerActivity : BaseViewerActivity(), SeekBar.OnSeekBarChangeLi
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        if (isInPictureInPictureMode) {
+            return
+        }
         setVideoSize()
         initTimeHolder()
         binding.videoSurfaceFrame.onGlobalLayout {
@@ -401,7 +681,11 @@ open class VideoPlayerActivity : BaseViewerActivity(), SeekBar.OnSeekBarChangeLi
             override fun onVideoSizeChanged(videoSize: VideoSize) {
                 mVideoSize.x = videoSize.width
                 mVideoSize.y = videoSize.height
-                setVideoSize()
+                if (isInPictureInPictureMode) {
+                    updatePipActions()
+                } else {
+                    setVideoSize()
+                }
             }
 
             override fun onPlayerErrorChanged(error: PlaybackException?) {

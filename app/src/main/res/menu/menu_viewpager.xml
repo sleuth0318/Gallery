@@ -145,6 +145,11 @@
         android:title="@string/slideshow"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/menu_theatre_mode"
+        android:icon="@drawable/ic_theatre_mode_vector"
+        android:title="@string/theatre_mode"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/menu_settings"
         android:icon="@drawable/ic_settings_cog_vector"
         android:title="@string/settings"

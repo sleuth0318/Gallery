@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/theatre_player_holder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.alexvasilkov.gestures.GestureFrameLayout
+        android:id="@+id/theatre_surface_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextureView
+            android:id="@+id/theatre_surface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
+
+    </com.alexvasilkov.gestures.GestureFrameLayout>
+
+    <androidx.media3.ui.SubtitleView
+        android:id="@+id/theatre_subtitles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <com.goodwy.gallery.views.MediaSideScroll
+        android:id="@+id/theatre_brightness_controller"
+        android:layout_width="@dimen/media_side_slider_width"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true" />
+
+    <com.goodwy.gallery.views.MediaSideScroll
+        android:id="@+id/theatre_volume_controller"
+        android:layout_width="@dimen/media_side_slider_width"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/theatre_volume_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/activity_margin"
+        android:alpha="0"
+        android:background="@drawable/black_rounded_background"
+        android:gravity="center"
+        android:paddingLeft="@dimen/activity_margin"
+        android:paddingTop="@dimen/medium_margin"
+        android:paddingRight="@dimen/activity_margin"
+        android:paddingBottom="@dimen/medium_margin"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/extra_big_text_size"
+        tools:text="Volume:\n50%" />
+
+    <TextView
+        android:id="@+id/theatre_brightness_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:alpha="0"
+        android:background="@drawable/black_rounded_background"
+        android:gravity="center"
+        android:paddingLeft="@dimen/activity_margin"
+        android:paddingTop="@dimen/medium_margin"
+        android:paddingRight="@dimen/activity_margin"
+        android:paddingBottom="@dimen/medium_margin"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/extra_big_text_size"
+        tools:text="Brightness:\n50%" />
+
+    <RelativeLayout
+        android:id="@+id/theatre_seek_feedback_backward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/bigger_margin"
+        android:alpha="0"
+        android:visibility="gone"
+        tools:alpha="1"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/theatre_seek_feedback_backward_icon"
+            android:layout_width="@dimen/smaller_icon_size"
+            android:layout_height="@dimen/smaller_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_seek_backward_feedback_vector" />
+
+        <TextView
+            android:id="@+id/theatre_seek_feedback_backward_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/theatre_seek_feedback_backward_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/small_margin"
+            android:shadowColor="@color/default_background_color"
+            android:shadowRadius="2"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/big_text_size"
+            tools:text="-10s (22:10)" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/theatre_seek_feedback_forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/bigger_margin"
+        android:alpha="0"
+        android:visibility="gone"
+        tools:alpha="1"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/theatre_seek_feedback_forward_icon"
+            android:layout_width="@dimen/smaller_icon_size"
+            android:layout_height="@dimen/smaller_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_seek_forward_feedback_vector" />
+
+        <TextView
+            android:id="@+id/theatre_seek_feedback_forward_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/theatre_seek_feedback_forward_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/small_margin"
+            android:shadowColor="@color/default_background_color"
+            android:shadowRadius="2"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/big_text_size"
+            tools:text="10s (22:10)" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/theatre_precise_seek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:alpha="0"
+        android:background="@drawable/playback_pill_background"
+        android:elevation="10dp"
+        android:paddingLeft="@dimen/list_item_padding_horizontal"
+        android:paddingTop="@dimen/list_item_padding_vertical"
+        android:paddingRight="@dimen/list_item_padding_horizontal"
+        android:paddingBottom="@dimen/list_item_padding_vertical"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/extra_big_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:contentDescription="@string/theatre_precise_seek"
+        tools:alpha="1"
+        tools:text="20:57"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/theatre_bottom_bar"
+        layout="@layout/theatre_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/theatre_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:elevation="0dp"
+        app:elevation="0dp">
+
+        <TextView
+            android:id="@+id/theatre_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingLeft="@dimen/activity_margin"
+            android:paddingTop="@dimen/medium_margin"
+            android:paddingRight="@dimen/activity_margin"
+            android:paddingBottom="@dimen/medium_margin"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/list_secondary_text_size"
+            tools:text="video.mp4" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include
+        android:id="@+id/error_message_holder"
+        layout="@layout/layout_media_load_error" />
+
+</RelativeLayout>

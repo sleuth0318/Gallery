@@ -444,6 +444,56 @@ class Config(context: Context) : BaseConfig(context) {
 
     fun getLastVideoPosition(path: String) = prefs.getInt("$LAST_VIDEO_POSITION_PREFIX${path.lowercase(Locale.getDefault())}", 0)
 
+    var pendingPipResumePath: String
+        get() = prefs.getString(RESUME_VIDEO_PATH, "")!!
+        set(path) = prefs.edit { putString(RESUME_VIDEO_PATH, path) }
+
+    var pendingPipResumePositionMs: Long
+        get() = prefs.getLong(RESUME_VIDEO_POSITION_MS, 0L)
+        set(position) = prefs.edit { putLong(RESUME_VIDEO_POSITION_MS, position) }
+
+    fun clearPendingPipResume() {
+        prefs.edit {
+            putString(RESUME_VIDEO_PATH, "")
+            putLong(RESUME_VIDEO_POSITION_MS, 0L)
+            putString(PENDING_PIP_EXTERNAL_AUDIO_URI, "")
+            putString(PENDING_PIP_EXTERNAL_SUBTITLE_URI, "")
+            putInt(PENDING_PIP_AUDIO_GROUP, -1)
+            putInt(PENDING_PIP_AUDIO_TRACK, -1)
+            putInt(PENDING_PIP_TEXT_GROUP, -1)
+            putInt(PENDING_PIP_TEXT_TRACK, -1)
+            putBoolean(PENDING_PIP_TEXT_DISABLED, false)
+        }
+    }
+
+    var pendingPipExternalAudioUri: String
+        get() = prefs.getString(PENDING_PIP_EXTERNAL_AUDIO_URI, "")!!
+        set(uri) = prefs.edit { putString(PENDING_PIP_EXTERNAL_AUDIO_URI, uri) }
+
+    var pendingPipExternalSubtitleUri: String
+        get() = prefs.getString(PENDING_PIP_EXTERNAL_SUBTITLE_URI, "")!!
+        set(uri) = prefs.edit { putString(PENDING_PIP_EXTERNAL_SUBTITLE_URI, uri) }
+
+    var pendingPipAudioGroup: Int
+        get() = prefs.getInt(PENDING_PIP_AUDIO_GROUP, -1)
+        set(value) = prefs.edit { putInt(PENDING_PIP_AUDIO_GROUP, value) }
+
+    var pendingPipAudioTrack: Int
+        get() = prefs.getInt(PENDING_PIP_AUDIO_TRACK, -1)
+        set(value) = prefs.edit { putInt(PENDING_PIP_AUDIO_TRACK, value) }
+
+    var pendingPipTextGroup: Int
+        get() = prefs.getInt(PENDING_PIP_TEXT_GROUP, -1)
+        set(value) = prefs.edit { putInt(PENDING_PIP_TEXT_GROUP, value) }
+
+    var pendingPipTextTrack: Int
+        get() = prefs.getInt(PENDING_PIP_TEXT_TRACK, -1)
+        set(value) = prefs.edit { putInt(PENDING_PIP_TEXT_TRACK, value) }
+
+    var pendingPipTextDisabled: Boolean
+        get() = prefs.getBoolean(PENDING_PIP_TEXT_DISABLED, false)
+        set(value) = prefs.edit { putBoolean(PENDING_PIP_TEXT_DISABLED, value) }
+
     fun getAllLastVideoPositions() = prefs.all.filterKeys {
         it.startsWith(LAST_VIDEO_POSITION_PREFIX)
     }

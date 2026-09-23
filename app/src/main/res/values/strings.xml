@@ -322,6 +322,9 @@
     <string name="ve_unmute">Unmute</string>
     <string name="ve_play">Play</string>
     <string name="ve_pause">Pause</string>
+    <string name="ve_picture_in_picture_playback">Play or pause video</string>
+    <string name="ve_picture_in_picture_seek_backward">Seek back 10 seconds</string>
+    <string name="ve_picture_in_picture_seek_forward">Seek forward 10 seconds</string>
 
     
     <string name="ve_trim_start">Start: %s</string>
@@ -420,4 +423,16 @@
     <string name="ve_ok">OK</string>
     <string name="ve_back">Back</string>
     <string name="ve_image_render_failed">frame render failed</string>
+
+    <!-- Theatre Mode -->
+    <string name="theatre_mode">Theatre Mode</string>
+    <string name="audio">Audio</string>
+    <string name="subtitles">Subtitles</string>
+    <string name="disable_track">Disable track</string>
+    <string name="add_external_audio_track">Add external audio track…</string>
+    <string name="add_external_subtitle_track">Add external subtitle track…</string>
+    <string name="theatre_seek_feedback">%1$s (%2$s)</string>
+    <string name="theatre_tracks">Audio and subtitles</string>
+    <string name="theatre_precise_seek">Precise seek</string>
+    <string name="theatre_rotate_orientation">Change orientation</string>
 </resources>

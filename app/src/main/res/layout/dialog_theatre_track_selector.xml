@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/theatre_track_selector_holder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/activity_margin">
+
+    <LinearLayout
+        android:id="@+id/theatre_audio_column"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="@dimen/medium_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.goodwy.commons.views.MyTextView
+                android:id="@+id/theatre_audio_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/audio"
+                android:textSize="@dimen/big_text_size" />
+
+            <ImageView
+                android:id="@+id/theatre_audio_header_arrow"
+                android:layout_width="@dimen/smaller_icon_size"
+                android:layout_height="@dimen/smaller_icon_size"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_arrow_top_down" />
+        </LinearLayout>
+
+        <com.goodwy.commons.views.MyTextView
+            android:id="@+id/theatre_audio_disable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.5"
+            android:gravity="center"
+            android:padding="@dimen/medium_margin"
+            android:text="@string/disable_track"
+            android:textSize="@dimen/medium_text_size" />
+
+        <LinearLayout
+            android:id="@+id/theatre_audio_tracks_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <com.goodwy.commons.views.MyTextView
+            android:id="@+id/theatre_add_external_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/medium_margin"
+            android:text="@string/add_external_audio_track"
+            android:textSize="@dimen/medium_text_size"
+            tools:text="Add external audio track…" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:id="@+id/theatre_subtitles_column"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="@dimen/medium_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.goodwy.commons.views.MyTextView
+                android:id="@+id/theatre_subtitles_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/subtitles"
+                android:textSize="@dimen/big_text_size" />
+
+            <ImageView
+                android:id="@+id/theatre_subtitles_header_arrow"
+                android:layout_width="@dimen/smaller_icon_size"
+                android:layout_height="@dimen/smaller_icon_size"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_arrow_top_down" />
+        </LinearLayout>
+
+        <com.goodwy.commons.views.MyTextView
+            android:id="@+id/theatre_subtitles_disable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.5"
+            android:gravity="center"
+            android:padding="@dimen/medium_margin"
+            android:text="@string/disable_track"
+            android:textSize="@dimen/medium_text_size" />
+
+        <LinearLayout
+            android:id="@+id/theatre_subtitles_tracks_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <com.goodwy.commons.views.MyTextView
+            android:id="@+id/theatre_add_external_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/medium_margin"
+            android:text="@string/add_external_subtitle_track"
+            android:textSize="@dimen/medium_text_size"
+            tools:text="Add external subtitle track…" />
+    </LinearLayout>
+
+</LinearLayout>

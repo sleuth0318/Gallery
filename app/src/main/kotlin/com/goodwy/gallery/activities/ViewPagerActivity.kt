@@ -203,6 +203,7 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
             binding.mediumViewerToolbar.menu.apply {
                 findItem(R.id.menu_show_on_map).isVisible = visibleBottomActions and BOTTOM_ACTION_SHOW_ON_MAP == 0
                 findItem(R.id.menu_slideshow).isVisible = visibleBottomActions and BOTTOM_ACTION_SLIDESHOW == 0
+                findItem(R.id.menu_theatre_mode).isVisible = currentMedium.isVideo()
                 findItem(R.id.menu_properties).isVisible = visibleBottomActions and BOTTOM_ACTION_PROPERTIES == 0
                 findItem(R.id.menu_delete).isVisible = visibleBottomActions and BOTTOM_ACTION_DELETE == 0
                 findItem(R.id.menu_share).isVisible = visibleBottomActions and BOTTOM_ACTION_SHARE == 0
@@ -267,6 +268,7 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
             when (menuItem.itemId) {
                 R.id.menu_set_as -> setAs(getCurrentPath())
                 R.id.menu_slideshow -> initSlideshow()
+                R.id.menu_theatre_mode -> launchTheatreMode()
                 R.id.menu_copy_to -> checkMediaManagementAndCopy(true)
                 R.id.menu_move_to -> moveFileTo()
                 R.id.menu_open_with -> openPath(getCurrentPath(), true)
@@ -523,6 +525,25 @@ class ViewPagerActivity : BaseViewerActivity(), ViewPager.OnPageChangeListener, 
     private fun initSlideshow() {
         SlideshowDialog(this) {
             startSlideshow()
+        }
+    }
+
+    private fun launchTheatreMode() {
+        val path = getCurrentPath()
+        ensureBackgroundThread {
+            val newUri = getFinalUriFromPath(path, BuildConfig.APPLICATION_ID)
+            if (newUri == null) {
+                toast(com.goodwy.commons.R.string.unknown_error_occurred)
+                return@ensureBackgroundThread
+            }
+
+            val mimeType = getUriMimeType(path, newUri)
+            runOnUiThread {
+                Intent(applicationContext, TheatreModeActivity::class.java).apply {
+                    setDataAndType(newUri, mimeType)
+                    startActivity(this)
+                }
+            }
         }
     }
 

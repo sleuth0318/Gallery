@@ -39,10 +39,19 @@ import com.goodwy.gallery.R
 import com.goodwy.gallery.activities.MediaActivity
 import com.goodwy.gallery.activities.SettingsActivity
 import com.goodwy.gallery.activities.SimpleActivity
+import com.goodwy.gallery.activities.TheatreModeActivity
 import com.goodwy.gallery.activities.VideoPlayerActivity
 import com.goodwy.gallery.dialogs.AllFilesPermissionDialog
 import com.goodwy.gallery.dialogs.PickDirectoryDialog
 import com.goodwy.gallery.helpers.DIRECTORY
+import com.goodwy.gallery.helpers.PIP_RESUME_AUDIO_GROUP
+import com.goodwy.gallery.helpers.PIP_RESUME_AUDIO_TRACK
+import com.goodwy.gallery.helpers.PIP_RESUME_EXTERNAL_AUDIO
+import com.goodwy.gallery.helpers.PIP_RESUME_EXTERNAL_SUBTITLE
+import com.goodwy.gallery.helpers.PIP_RESUME_POSITION
+import com.goodwy.gallery.helpers.PIP_RESUME_TEXT_DISABLED
+import com.goodwy.gallery.helpers.PIP_RESUME_TEXT_GROUP
+import com.goodwy.gallery.helpers.PIP_RESUME_TEXT_TRACK
 import com.goodwy.gallery.dialogs.ResizeMultipleImagesDialog
 import com.goodwy.gallery.dialogs.ResizeWithPathDialog
 import com.goodwy.gallery.helpers.RECYCLE_BIN
@@ -94,6 +103,52 @@ fun Activity.launchGesturePlayer(path: String, extras: HashMap<String, Boolean> 
             Intent(applicationContext, VideoPlayerActivity::class.java).apply {
                 setDataAndType(newUri, mimeType)
                 for ((key, value) in extras) putExtra(key, value)
+                startActivity(this)
+            }
+        }
+    }
+}
+
+fun Activity.launchTheatreResume() {
+    // Reopen the video paused in theatre mode at the exact position where the
+    // picture-in-picture pop-up was closed.
+    val path = config.pendingPipResumePath
+    if (path.isEmpty()) {
+        return
+    }
+
+    // Capture every pending value BEFORE clearing, since the clear also wipes the track state.
+    val positionMs = config.pendingPipResumePositionMs
+    val audioGroup = config.pendingPipAudioGroup
+    val audioTrack = config.pendingPipAudioTrack
+    val textGroup = config.pendingPipTextGroup
+    val textTrack = config.pendingPipTextTrack
+    val textDisabled = config.pendingPipTextDisabled
+    val externalAudio = config.pendingPipExternalAudioUri
+    val externalSubtitle = config.pendingPipExternalSubtitleUri
+
+    // Consume the pending point immediately so a second resume callback cannot
+    // fire a duplicate relaunch.
+    config.clearPendingPipResume()
+    ensureBackgroundThread {
+        val newUri = getFinalUriFromPath(path, BuildConfig.APPLICATION_ID)
+        if (newUri == null) {
+            return@ensureBackgroundThread
+        }
+
+        val mimeType = getUriMimeType(path, newUri)
+        runOnUiThread {
+            Intent(applicationContext, TheatreModeActivity::class.java).apply {
+                setDataAndType(newUri, mimeType)
+                putExtra(PIP_RESUME_POSITION, positionMs)
+                putExtra(PIP_RESUME_AUDIO_GROUP, audioGroup)
+                putExtra(PIP_RESUME_AUDIO_TRACK, audioTrack)
+                putExtra(PIP_RESUME_TEXT_GROUP, textGroup)
+                putExtra(PIP_RESUME_TEXT_TRACK, textTrack)
+                putExtra(PIP_RESUME_TEXT_DISABLED, textDisabled)
+                putExtra(PIP_RESUME_EXTERNAL_AUDIO, externalAudio)
+                putExtra(PIP_RESUME_EXTERNAL_SUBTITLE, externalSubtitle)
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 startActivity(this)
             }
         }
