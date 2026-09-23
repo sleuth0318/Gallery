@@ -14,8 +14,13 @@ This release builds on the original open-source base with custom UI/UX tweaks, i
 ## Built-In Editor
 This update introduces a clean, in-app media editor, enabling you to crop, rotate, and fine-tune your media files directly within the application without relying on third-party apps. Keeping with the core privacy-first foundation, all media processing happens entirely on your device with zero online data exposure—giving you quick, seamless editing tools while keeping your photos completely private.
 
-<img src="app/src/gplay/res/editor.png" width="500" alt="Im-App Editor"/>
-<br><br>
+<img src="app/src/gplay/res/editor.png" width="500" alt="Im-App Editor"/><br><br>
+
+## Theatre Mode
+Another update adding a minimalistic, distraction-free video playback interface with audio/subtitle control (supports multiple audio/subtitle switching + external file loader).
+Enabled automatic Picture-in-Picture (PiP) when exiting directly to home screen from theatre mode allowing multitasking without any breaks.
+
+<img src="app/src/gplay/res/audio.png" width="400" alt="Audio Selector"/> <img src="app/src/gplay/res/subtitle.png" width="400" alt="Subtitle Selector"/> <br><br>
 
 *Based on [Goodwy File Manager](https://github.com/Goodwy/File-Manager), [Simple File Manager](https://github.com/SimpleMobileTools/Simple-File-Manager), [Fossify File Manager](https://github.com/FossifyOrg/File-Manager).*
 
